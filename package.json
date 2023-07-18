@@ -9,10 +9,21 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@expo/webpack-config": "18.0.1",
+    "eas-cli": "^3.15.1",
     "expo": "~48.0.18",
+    "expo-camera": "~13.2.1",
+    "expo-face-detector": "~12.1.1",
+    "expo-file-system": "~15.2.2",
+    "expo-image-manipulator": "~11.1.1",
     "expo-status-bar": "~1.4.4",
+    "expo-updates": "~0.16.4",
     "react": "18.2.0",
-    "react-native": "0.71.8"
+    "react-dom": "18.2.0",
+    "react-native": "0.71.8",
+    "react-native-camera": "^4.2.1",
+    "react-native-web": "~0.18.10",
+    "react-native-websocket": "^1.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"
