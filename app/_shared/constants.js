@@ -1,0 +1,5 @@
+export const SCREENS = {
+    LOGIN: 'LOGIN',
+    MENU: 'MENU',
+    VERIFICATION: 'VERIFICATION'
+}
