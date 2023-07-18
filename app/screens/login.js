@@ -1,5 +1,12 @@
 import React from "react";
-import { Button, StyleSheet, Text, TextInput, View, TouchableOpacity } from "react-native";
+import {
+  Button,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+  TouchableOpacity,
+} from "react-native";
 import { SCREENS } from "../_shared/constants";
 
 export default function LoginScreen({ navigation, route }) {
@@ -21,6 +28,15 @@ export default function LoginScreen({ navigation, route }) {
           <Text style={styles.loginButton}>Login</Text>
         </TouchableOpacity>
       </View>
+
+      <View style={styles.infoContainer}>
+        <Text style={styles.info}>
+          Please login to access certain features, otherwise{" "}
+          <TouchableOpacity>
+            <Text style={styles.continue}>continue</Text>
+          </TouchableOpacity>
+        </Text>
+      </View>
     </View>
   );
 }
@@ -35,6 +51,21 @@ const styles = StyleSheet.create({
   authenticationLabel: {
     fontSize: 30,
     marginBottom: 40,
+  },
+  continue: {
+    textDecorationLine: "underline",
+    color: "#00BFA5",
+  },
+  info: {
+    textAlign: "center",
+    fontSize: 16,
+  },
+  infoContainer: {
+    marginTop: 80,
+    padding: 20,
+    borderRadius: 10,
+    width: "80%",
+    backgroundColor: "#CFD8DC",
   },
   input: {
     padding: 10,
@@ -51,11 +82,12 @@ const styles = StyleSheet.create({
   loginButtonContainer: {
     width: "80%",
     padding: 10,
-    backgroundColor: "#1DE9B6",
+    backgroundColor: "#00BFA5",
     borderRadius: 10,
   },
   loginButton: {
     textAlign: "center",
     fontSize: 16,
+    color: "white",
   },
 });
