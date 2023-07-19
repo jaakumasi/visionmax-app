@@ -1,12 +1,19 @@
 import React, { useEffect, useRef, useState } from "react";
-import { View, StyleSheet, Button } from "react-native";
+import { View, StyleSheet, Button, StatusBar } from "react-native";
 import { Camera, CameraType, FlashMode } from "expo-camera";
 import * as FaceDetector from "expo-face-detector";
+// import { manipulateAsync } from "expo-image-manipulator";
 
 export default function Verification({ navigation }) {
   const [hasPermission, setHasPermission] = useState(false);
   const [cameraType, setCameraType] = useState(CameraType.front);
   const [faces, setFaces] = useState([]);
+
+  const [typingSpeed, setTypingspeed] = useState(0);
+
+  useEffect(() => {
+    setTypingspeed(previous => previous++)
+  },[])
 
   const cameraRef = useRef(null);
 
@@ -55,13 +62,17 @@ export default function Verification({ navigation }) {
         size: { width, height },
       } = faceBounds;
 
-      // try {
-      //   const shot = await cameraRef.current.takePictureAsync({
-      //     quality: 0.5,
-      //     skipProcessing: true,
-      //     base64: true
-      //   });
+    
+    }
+  };
 
+  const handleShot = async () => {
+    try {
+      const shot = await cameraRef.current.takePictureAsync({
+        quality: 0.5,
+        skipProcessing: true,
+        base64: true,
+      });
       // const cropResult = await manipulateAsync(
       //   shot.uri,
       //   [
@@ -77,23 +88,6 @@ export default function Verification({ navigation }) {
       //   { compress: 1, format: SaveFormat.JPEG, base64: true }
       // );
 
-      // console.log('shot uri: ', shot.base64);
-
-      //   sendImageData(cropResult.base64);
-      // } catch (error) {
-      //   console.log(error.message);
-      // }
-    }
-  };
-
-  const handleShot = async () => {
-    try {
-      const shot = await cameraRef.current.takePictureAsync({
-        quality: 0.5,
-        skipProcessing: true,
-        base64: true,
-      });
-
       sendImageData(shot.base64);
     } catch (error) {
       console.log(error.message);
@@ -106,10 +100,10 @@ export default function Verification({ navigation }) {
         ref={cameraRef}
         type={cameraType}
         style={styles.camera}
-        // flashMode={FlashMode.off}
+        flashMode={FlashMode.on}
         onFacesDetected={handleFacesDetected}
         faceDetectorSettings={{
-          mode: FaceDetector.FaceDetectorMode.fast,
+          mode: FaceDetector.FaceDetectorMode.accurate,
           landmarks: FaceDetector.FaceDetectorLandmarks.all,
           runClassifications: FaceDetector.FaceDetectorClassifications.none,
         }}
@@ -117,9 +111,9 @@ export default function Verification({ navigation }) {
         {/* <View style={styles.flipBtn}>
           <Button title="flip cam" onPress={toggleCameraType} />
         </View> */}
-        {/* <View style={styles.flipBtn}>
+        <View style={styles.flipBtn}>
           <Button title="take shot" onPress={handleShot} />
-        </View> */}
+        </View>
         <View style={styles.facesContainer}>
           {faces.map((face, index) => (
             <View
@@ -146,6 +140,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    marginTop: StatusBar.currentHeight
   },
   camera: {
     flex: 1,
