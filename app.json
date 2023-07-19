@@ -1,13 +1,13 @@
 {
   "expo": {
-    "name": "DoneWithIt",
-    "slug": "DoneWithIt",
+    "name": "VisionMax",
+    "slug": "VisionMax",
     "version": "1.0.0",
-    "orientation": "portrait",
+    "orientation": "default",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/visionmax_splash_sauna.jpg",
       "resizeMode": "cover",
       "backgroundColor": "#666666"
     },
@@ -20,7 +20,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.jaakumasi.DoneWithIt"
+      "package": "com.jaakumasi.visionmax"
     },
     "web": {
       "favicon": "./assets/favicon.png"
