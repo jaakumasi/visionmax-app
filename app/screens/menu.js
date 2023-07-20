@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   StyleSheet,
@@ -7,17 +7,26 @@ import {
   View,
   TouchableOpacity,
 } from "react-native";
-import { SCREENS } from "../_shared/constants";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { LOGGED_IN, SCREENS } from "../_shared/constants";
+import MenuOptions from "../components/menuOptions";
 
 export default function MenuScreen({ navigation }) {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  // useEffect(() => {
+  //   console.log(isLoggedIn);
+  // }, [isLoggedIn]);
+
+  useEffect(() => {
+    (async () => {
+      const logInValue = await AsyncStorage.getItem(LOGGED_IN);
+      setIsLoggedIn(logInValue === "1" ? true : false);
+    })();
+  }, []);
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={() => navigation.navigate(SCREENS.VERIFICATION)}>
-        <Text style={styles.menuItem}>Verification</Text>
-      </TouchableOpacity>
-      <TouchableOpacity>
-        <Text style={styles.menuItem}>Take Attendance</Text>
-      </TouchableOpacity>
+      <MenuOptions isLoggedIn={isLoggedIn} navigation={navigation} />
     </View>
   );
 }
@@ -25,7 +34,7 @@ export default function MenuScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // justifyContent: "center",
+    background: "linear-gradient(45deg, 'red', 'yellow')",
   },
   menuItem: {
     padding: 15,

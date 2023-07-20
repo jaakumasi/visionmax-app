@@ -3,8 +3,8 @@
     "name": "VisionMax",
     "slug": "VisionMax",
     "version": "1.0.0",
-    "orientation": "default",
-    "icon": "./assets/icon.png",
+    "orientation": "portrait",
+    "icon": "./assets/visionmax_icon.jpg",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/visionmax_splash_sauna.jpg",

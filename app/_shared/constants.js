@@ -1,7 +1,9 @@
 export const SCREENS = {
-  LOGIN: "LOGIN",
-  MENU: "MENU",
-  VERIFICATION: "VERIFICATION",
+  LOGIN: "Login",
+  MENU: "Menu",
+  VERIFICATION: "Verification",
+  ATTENDANCE: "Attendance",
+  HEADCOUNT: "Headcount",
 };
 
 export const LOGGED_IN = "LOGGED_IN";

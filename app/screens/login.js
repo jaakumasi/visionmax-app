@@ -39,7 +39,7 @@ export default function LoginScreen({ navigation, route }) {
     //   const data = await response.json();
     //   await AsyncStorage.setItem(LOGGED_IN, data.success ? "1" : "0"); // 1 for logged in
 
-      navigation.navigate(SCREENS.MENU);
+    navigation.navigate(SCREENS.MENU);
     // }
   };
 
@@ -112,6 +112,9 @@ export default function LoginScreen({ navigation, route }) {
         </TouchableOpacity>
       </View>
 
+      {/* divider */}
+      <View style={styles.divider}></View>
+
       {/* continue without login info */}
       <View style={styles.infoContainer}>
         <Text style={styles.info}>
@@ -148,15 +151,24 @@ const styles = StyleSheet.create({
     textDecorationLine: "underline",
     color: "#00BFA5",
   },
+  divider: {
+    // height: 1,
+    width: "85%",
+    borderWidth: 0,
+    borderTopWidth: 1,
+    borderStyle: "solid",
+    borderColor: "#BDBDBDAA",
+    marginTop: 40,
+  },
   info: {
     textAlign: "center",
     fontSize: 14,
     color: "white",
   },
   infoContainer: {
-    marginTop: 80,
+    marginTop: 40,
     padding: 10,
-    borderRadius: 10,
+    borderRadius: 5,
     width: "80%",
     backgroundColor: "#BDBDBD",
   },
@@ -167,7 +179,7 @@ const styles = StyleSheet.create({
     borderColor: "#00BFA5",
     borderWidth: 1,
     borderStyle: "solid",
-    borderRadius: 10,
+    borderRadius: 5,
     width: "80%",
     fontSize: 16,
     backgroundColor: "white",
@@ -182,7 +194,7 @@ const styles = StyleSheet.create({
     width: "80%",
     padding: 10,
     backgroundColor: "#00BFA5",
-    borderRadius: 10,
+    borderRadius: 5,
     marginTop: 30,
   },
   loginButton: {
