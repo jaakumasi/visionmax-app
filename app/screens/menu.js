@@ -6,6 +6,7 @@ import {
   TextInput,
   View,
   TouchableOpacity,
+  ImageBackground,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { LOGGED_IN, SCREENS } from "../_shared/constants";
@@ -25,9 +26,12 @@ export default function MenuScreen({ navigation }) {
     })();
   }, []);
   return (
-    <View style={styles.container}>
+    <ImageBackground
+      source={require("../../assets/login_bg.jpg")}
+      style={styles.container}
+    >
       <MenuOptions isLoggedIn={isLoggedIn} navigation={navigation} />
-    </View>
+    </ImageBackground>
   );
 }
 
