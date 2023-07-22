@@ -30,7 +30,8 @@ const authOptions = [
 
 export default function MenuOptions({ isLoggedIn, navigation }) {
   //   const menuOptions = options[isLoggedIn ? 0 : 1].map((option, idx) => (
-  const options = isLoggedIn ? authOptions : noAuthoptions;
+  // const options = isLoggedIn ? authOptions : noAuthoptions;
+  const options = authOptions;
   const menuOptions = options.map((option, idx) => (
     <TouchableOpacity
       style={styles.menuOptionContainer}
@@ -66,10 +67,14 @@ const styles = StyleSheet.create({
     width: "90%",
     padding: 15,
     marginTop: 15,
-    backgroundColor: "#E0E0E0",
+    backgroundColor: "#F0F0F0",
     borderRadius: 8,
     justifyContent: "center",
     alignItems: "center",
+    elevation: 3,
+    shadowColor: "#666666",
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
   },
   menuOptionIconContainer: {
     justifyContent: "center",
@@ -77,7 +82,7 @@ const styles = StyleSheet.create({
     width: 80,
     height: 80,
     borderRadius: 40,
-    backgroundColor: "#C0C0C0",
+    backgroundColor: "#DFDFDF",
   },
   menuOptionText: {
     marginTop: 15,
