@@ -10,12 +10,15 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
+  TouchableHighlight,
   View,
   SafeAreaView,
   ScrollView,
   Image,
+  TouchableWithoutFeedback,
 } from "react-native";
 import { SCREENS } from "../_shared/constants";
+import Enrollment from "../screens/enrollment.test_feature";
 
 /* 
     0: features only accessible after login
@@ -32,33 +35,55 @@ export default function MenuOptions({ isLoggedIn, navigation }) {
   //   const menuOptions = options[isLoggedIn ? 0 : 1].map((option, idx) => (
   // const options = isLoggedIn ? authOptions : noAuthoptions;
   const options = authOptions;
-  const menuOptions = options.map((option, idx) => (
-    <TouchableOpacity
-      style={styles.menuOptionContainer}
-      onPress={() => navigation.navigate(option.screen)}
-      key={idx}
-    >
-      {/* menu option icon */}
-      <View
-        style={[
-          styles.menuOptionIconContainer,
-          option.screen === SCREENS.HEADCOUNT ? styles.headCountIcon : {},
-        ]}
+  const menuOptions = (
+    <View style={{ width: "100%", alignItems: "center" }}>
+      {options.map((option, idx) => (
+        <TouchableOpacity
+          style={styles.menuOptionContainer}
+          onPress={() => navigation.navigate(option.screen)}
+          key={idx}
+        >
+          {/* menu option icon */}
+          <View
+            style={[
+              styles.menuOptionIconContainer,
+              option.screen === SCREENS.HEADCOUNT ? styles.headCountIcon : {},
+            ]}
+          >
+            <FontAwesome5 name={option.icon} size={26} />
+          </View>
+
+          <Text style={styles.menuOptionText}>{option.screen}</Text>
+        </TouchableOpacity>
+      ))}
+    </View>
+  );
+
+  return (
+    // <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
+      {menuOptions}
+
+      {/* test features */}
+      <TouchableOpacity
+        style={styles.menuOptionContainer}
+        onPress={() => navigation.navigate(SCREENS.ENROLLMENT)}
       >
-        <FontAwesome5 name={option.icon} size={26} />
-      </View>
-
-      <Text style={styles.menuOptionText}>{option.screen}</Text>
-    </TouchableOpacity>
-  ));
-
-  return <View style={styles.container}>{menuOptions}</View>;
+        <Text style={{ marginBottom: 15, fontSize: 16, color: "red" }}>
+          Test Feature
+        </Text>
+        <Text style={{ marginTop: 0, fontSize: 16 }}>Enrollment</Text>
+      </TouchableOpacity>
+    </ScrollView>
+    // </View>
+  );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     alignItems: "center",
+    paddingBottom: 20,
+    paddingTop: 5,
   },
   headCountIcon: {
     transform: [{ rotate: "90deg" }],

@@ -17,6 +17,7 @@ import LoginScreen from "./app/screens/login";
 import Verification from "./app/screens/verification";
 import MenuScreen from "./app/screens/menu";
 import HeaderComponent from "./app/components/header";
+import Enrollment from "./app/screens/enrollment.test_feature";
 
 const Stack = createNativeStackNavigator();
 
@@ -43,10 +44,21 @@ export default function App() {
           component={Verification}
           options={{ headerShown: false }}
         />
+        {/* <Stack.Screen
+          name={SCREENS.HEADCOUNT}
+          component={HeadCount}
+          options={{ headerShown: false }}
+        /> */}
+
+        {/* test features */}
+        <Stack.Screen
+          name={SCREENS.ENROLLMENT}
+          component={Enrollment}
+          options={{ headerShown: false }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
 }
-
 
 // npx expo install react-native-screens react-native-safe-area-context

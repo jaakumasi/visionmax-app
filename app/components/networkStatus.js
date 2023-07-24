@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import NetInfo from "@react-native-community/netinfo";
 
 export default function useNetworkStatus() {

@@ -4,6 +4,7 @@ export const SCREENS = {
   VERIFICATION: "Verification",
   ATTENDANCE: "Attendance",
   HEADCOUNT: "Headcount",
+  ENROLLMENT: 'Enrollment',
 };
 
 export const LOGGED_IN = "LOGGED_IN";
