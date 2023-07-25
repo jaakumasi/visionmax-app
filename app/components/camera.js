@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import { Camera, CameraType, FlashMode } from "expo-camera";
 import * as FaceDetector from "expo-face-detector";
+import FontAwesome from "@expo/vector-icons/FontAwesome";
 import useNetworkStatus from "./networkStatus";
 
 const toastMessages = [
@@ -82,24 +83,13 @@ export default function CameraComponent() {
       setIsProcessingComplete(true);
       setRecognitionData(data);
     } catch (error) {
-      console.log(error.message);
+      // console.log(error.message);
     }
   };
 
-  const handleFacesDetected = async ({ faces }) => {
-    setFaces(faces);
-
-    // console.log(
-    //   "isOnline: ",
-    //   isOnline,
-    //   "single face detected: ",
-    //   singleFaceDetected
-    // );
-  };
+  const handleFacesDetected = async ({ faces }) => setFaces(faces);
 
   const handleShot = async () => {
-    console.log("taking shot...");
-
     try {
       const shot = await cameraRef.current.takePictureAsync({
         quality: 0.5,
@@ -109,8 +99,12 @@ export default function CameraComponent() {
 
       sendImageData(shot.base64);
     } catch (error) {
-      console.log(error.message);
+      // console.log(error.message);
     }
+  };
+
+  const toggleCameraType = () => {
+    setCameraType(CameraType.front ? CameraType.back : CameraType.front);
   };
 
   return (
@@ -140,11 +134,14 @@ export default function CameraComponent() {
             runClassifications: FaceDetector.FaceDetectorClassifications.none,
           }}
         >
-          {/* <View style={styles.flipBtn}>
-          <Button title="flip cam" onPress={toggleCameraType} />
-        </View> */}
-
-          {/* show verification and bounding boxes when no shot is being processed */}
+          <View style={styles.switchCam}>
+            <FontAwesome
+              name="camera-retro"
+              size={20}
+              color="#0091EA"
+              onPress={toggleCameraType}
+            />
+          </View>
 
           <View style={styles.verify}>
             <Button
@@ -257,8 +254,6 @@ const styles = StyleSheet.create({
   camera: {
     flex: 1,
     aspectRatio: "9/16",
-    // justifyContent: "center",
-    // alignItems: "center",
   },
   details: {
     fontSize: 16,
@@ -326,6 +321,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: "white",
   },
+  switchCam: {
+    position: "absolute",
+    top: 15,
+    right: 25,
+  },
   times: {
     justifyContent: "center",
     alignItems: "center",
@@ -339,6 +339,5 @@ const styles = StyleSheet.create({
     bottom: 10,
     width: "90%",
     borderRadius: 5,
-    backfaceVisibility: "hidden",
   },
 });
