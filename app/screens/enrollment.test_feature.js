@@ -10,7 +10,7 @@ import {
   View,
 } from "react-native";
 import { Camera, CameraType, FlashMode } from "expo-camera";
-import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
+import FontAwesome from "@expo/vector-icons/FontAwesome";
 
 export default function Enrollment({ navigation }) {
   const [index, setIndex] = useState(null);
@@ -24,6 +24,7 @@ export default function Enrollment({ navigation }) {
   const [showShotTaken, setShowShotTaken] = useState(false);
   const [base64Image, setBase64Image] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [cameraType, setCameraType] = useState(CameraType.back);
 
   const cameraRef = useRef(null);
   const nameInputRef = useRef(null);
@@ -59,7 +60,7 @@ export default function Enrollment({ navigation }) {
     setName(null);
     setIndex(null);
     setProgramme(null);
-    nameInputRef.current.value = ''
+    nameInputRef.current.value = "";
   };
 
   const handleTakeShot = async () => {
@@ -107,6 +108,12 @@ export default function Enrollment({ navigation }) {
     }
   };
 
+  const toggleCameraType = () => {
+    setCameraType(
+      cameraType === CameraType.front ? CameraType.back : CameraType.front
+    );
+  };
+
   return (
     <>
       {showCamera ? (
@@ -115,8 +122,17 @@ export default function Enrollment({ navigation }) {
           style={styles.camera}
           ratio="16:9"
           flashMode={FlashMode.off}
-          type={CameraType.back}
+          type={cameraType}
         >
+          <View style={styles.switchCam}>
+            <FontAwesome
+              name="camera"
+              size={20}
+              color="#0091EA"
+              onPress={toggleCameraType}
+            />
+          </View>
+
           <View
             style={{
               position: "absolute",
@@ -130,11 +146,9 @@ export default function Enrollment({ navigation }) {
               backgroundColor: "#00BFA5",
             }}
           >
-            <TouchableOpacity
-              onPress={handleTakeShot}
-            >
+            <TouchableOpacity onPress={handleTakeShot}>
               <View>
-                <FontAwesome5 name="camera" size={20} color="white" />
+                <FontAwesome name="camera" size={20} color="white" />
               </View>
             </TouchableOpacity>
           </View>
@@ -178,7 +192,7 @@ export default function Enrollment({ navigation }) {
                 style={{ flexDirection: "row" }}
               >
                 <View style={{ marginRight: 10 }}>
-                  <FontAwesome5 name="camera" size={20} color="white" />
+                  <FontAwesome name="camera" size={20} color="white" />
                 </View>
                 <Text style={styles.takeShotButton}>Take shot</Text>
               </TouchableOpacity>
@@ -186,7 +200,8 @@ export default function Enrollment({ navigation }) {
           )}
 
           {/* student's name input */}
-          <TextInput ref={nameInputRef}
+          <TextInput
+            ref={nameInputRef}
             style={[
               styles.input,
               !invalidNameInputMessage ? {} : styles.nullInput,
@@ -198,7 +213,8 @@ export default function Enrollment({ navigation }) {
           <Text style={styles.invalidInputText}>{invalidNameInputMessage}</Text>
 
           {/* student's index input */}
-          <TextInput ref={indexInputRef}
+          <TextInput
+            ref={indexInputRef}
             style={[
               styles.input,
               !invalidIndexInputMessage ? {} : styles.nullInput, // flag input as red if input is null or has digits != 7
@@ -213,7 +229,8 @@ export default function Enrollment({ navigation }) {
           </Text>
 
           {/* student's programme input */}
-          <TextInput ref={programmeInputRef}
+          <TextInput
+            ref={programmeInputRef}
             style={[
               styles.input,
               !invalidProgrammeInputMessage ? {} : styles.nullInput,
@@ -347,6 +364,11 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 16,
     color: "white",
+  },
+  switchCam: {
+    position: "absolute",
+    top: 35,
+    right: 45,
   },
   takeShotButton: {
     color: "white",

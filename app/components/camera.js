@@ -58,6 +58,7 @@ export default function CameraComponent() {
   }, [faces]);
 
   const sendImageData = async (base64) => {
+    console.log("sending image...");
     setIsProcessingShot(true);
     const timeoutId = setTimeout(() => {
       setIsTimedOut(true);
@@ -90,6 +91,8 @@ export default function CameraComponent() {
   const handleFacesDetected = async ({ faces }) => setFaces(faces);
 
   const handleShot = async () => {
+    console.log("taking shot...");
+
     try {
       const shot = await cameraRef.current.takePictureAsync({
         quality: 0.5,
@@ -104,7 +107,9 @@ export default function CameraComponent() {
   };
 
   const toggleCameraType = () => {
-    setCameraType(CameraType.front ? CameraType.back : CameraType.front);
+    setCameraType(
+      cameraType === CameraType.front ? CameraType.back : CameraType.front
+    );
   };
 
   return (
@@ -134,20 +139,21 @@ export default function CameraComponent() {
             runClassifications: FaceDetector.FaceDetectorClassifications.none,
           }}
         >
-          <View style={styles.switchCam}>
-            <FontAwesome
-              name="camera-retro"
-              size={20}
-              color="#0091EA"
-              onPress={toggleCameraType}
-            />
-          </View>
-
           <View style={styles.verify}>
             <Button
               title={toastMessage}
               onPress={handleShot}
               disabled={!(singleFaceDetected && isOnline)}
+            />
+          </View>
+
+          {/* flip cam */}
+          <View style={styles.switchCam}>
+            <FontAwesome
+              name="camera"
+              size={20}
+              color="#0091EA"
+              onPress={toggleCameraType}
             />
           </View>
 
@@ -183,16 +189,12 @@ function Results({
   setRecognitionData,
   setIsProcessingComplete,
 }) {
-  console.log("isProcessingComplete: ", isProcessingComplete);
-
   const handleCloseResults = () => {
     setIsProcessingShot(false);
     setRecognitionData({});
     setIsProcessingComplete(false);
     setIsTimedOut(false);
   };
-
-  console.log("isTimedOut: ", isTimedOut);
 
   return (
     <View style={styles.resultsContainer}>

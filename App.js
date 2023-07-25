@@ -16,6 +16,8 @@ import { SCREENS } from "./app/_shared/constants";
 import LoginScreen from "./app/screens/login";
 import Verification from "./app/screens/verification";
 import MenuScreen from "./app/screens/menu";
+import Attendance from "./app/screens/attendance";
+import HeadCount from "./app/screens/headcount";
 import HeaderComponent from "./app/components/header";
 import Enrollment from "./app/screens/enrollment.test_feature";
 
@@ -44,11 +46,16 @@ export default function App() {
           component={Verification}
           options={{ headerShown: false }}
         />
-        {/* <Stack.Screen
+        <Stack.Screen
+          name={SCREENS.ATTENDANCE}
+          component={Attendance}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
           name={SCREENS.HEADCOUNT}
           component={HeadCount}
           options={{ headerShown: false }}
-        /> */}
+        />
 
         {/* test features */}
         <Stack.Screen

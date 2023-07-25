@@ -18,6 +18,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     paddingRight: Dimensions.get("screen").width / 9,
+    paddingLeft: 5,
   },
   menuText: {
     fontSize: 18,

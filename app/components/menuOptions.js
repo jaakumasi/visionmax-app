@@ -28,7 +28,7 @@ const noAuthoptions = [{ screen: SCREENS.HEADCOUNT, icon: "bars" }];
 const authOptions = [
   { screen: SCREENS.VERIFICATION, icon: "check" },
   { screen: SCREENS.ATTENDANCE, icon: "clipboard" },
-  ...noAuthoptions,
+  // ...noAuthoptions,
 ];
 
 export default function MenuOptions({ isLoggedIn, navigation }) {
