@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import { Camera, CameraType, FlashMode } from "expo-camera";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
+import { SERVER_URL } from "../_shared/constants";
 
 export default function Enrollment({ navigation }) {
   const [index, setIndex] = useState(null);
@@ -34,20 +35,16 @@ export default function Enrollment({ navigation }) {
   const handleSubmit = async () => {
     if (index && name && programme && !isSubmitting) {
       setIsSubmitting(true);
-      await fetch(
-        // "https://fastapi-demo-ty9z.onrender.com/image",
-        "http://192.168.43.11:8000/enroll",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            base64_image: base64Image,
-            name,
-            index,
-            programme,
-          }),
-        }
-      );
+      await fetch(`${SERVER_URL}/enroll`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          base64_image: base64Image,
+          name,
+          index,
+          programme,
+        }),
+      });
 
       resetToDefaults();
       setIsSubmitting(false);
@@ -367,7 +364,7 @@ const styles = StyleSheet.create({
   },
   switchCam: {
     position: "absolute",
-    top: 35,
+    top: 50,
     right: 45,
   },
   takeShotButton: {

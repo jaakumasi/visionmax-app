@@ -24,16 +24,15 @@ import Enrollment from "../screens/enrollment.test_feature";
     0: features only accessible after login
     1: features accessible without auth
 */
-const noAuthoptions = [{ screen: SCREENS.HEADCOUNT, icon: "bars" }];
+const noAuthOptions = [{ screen: SCREENS.HEADCOUNT, icon: "bars" }];
 const authOptions = [
   { screen: SCREENS.VERIFICATION, icon: "check" },
   { screen: SCREENS.ATTENDANCE, icon: "clipboard" },
-  // ...noAuthoptions,
+  // ...noAuthOptions,
 ];
 
 export default function MenuOptions({ isLoggedIn, navigation }) {
-  //   const menuOptions = options[isLoggedIn ? 0 : 1].map((option, idx) => (
-  // const options = isLoggedIn ? authOptions : noAuthoptions;
+  // const options = isLoggedIn ? authOptions : noAuthOptions;
   const options = authOptions;
   const menuOptions = (
     <View style={{ width: "100%", alignItems: "center" }}>

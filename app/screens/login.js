@@ -1,19 +1,22 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import {
-  Button,
   ImageBackground,
-  KeyboardAvoidingView,
-  Platform,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View,
-  SafeAreaView,
-  ScrollView,
+  ToastAndroid,
+  Keyboard,
 } from "react-native";
-import { LOGGED_IN, SCREENS } from "../_shared/constants";
+import {
+  DATA,
+  LOGGED_IN,
+  SCREENS,
+  SERVER_URL,
+  TOAST_MESSAGES,
+} from "../_shared/constants";
 
 export default function LoginScreen({ navigation, route }) {
   const [id, setID] = useState(null);
@@ -23,24 +26,50 @@ export default function LoginScreen({ navigation, route }) {
     useState("");
   const [isLogginIn, setIsLoggingIn] = useState(false);
 
-  const handleContinue = () => {};
+  const idRef = useRef(null);
+  const passwordRef = useRef(null);
+
+  const handleContinue = async () => {
+    await AsyncStorage.setItem(LOGGED_IN, "0"); // 1 for logged in: 0 otherwise
+    navigation.navigate(SCREENS.NO_AUTH_MENU);
+  };
 
   const handleLogin = async () => {
     /* login button is only functional when there's no error messages, meaning Id & password are set
        and a login has not already been triggered
     */
-    // if (id && password && !isLogginIn) {
-    //   // setIsLoggingIn(true);
-    //   const response = await fetch("", {
-    //     method: "POST",
-    //     headers: { "Content-Type": "applicaion/json" },
-    //     body: JSON.stringify({ id, password }),
-    //   });
-    //   const data = await response.json();
-    //   await AsyncStorage.setItem(LOGGED_IN, data.success ? "1" : "0"); // 1 for logged in
+    if (id && password && !isLogginIn) {
+      setIsLoggingIn(true);
+      Keyboard.dismiss();
+
+      const response = await fetch(`${SERVER_URL}/login`, {
+        method: "POST",
+        headers: { "Content-Type": "applicaion/json" },
+        body: JSON.stringify({ id, password }),
+      });
+      const data = await response.json();
+
+      if (data.success) {
+        handleLoginSuccess(data);
+      } else {
+        ToastAndroid.show(TOAST_MESSAGES.INVALID_CRED, ToastAndroid.SHORT);
+        setIsLoggingIn(false);
+      }
+    } else {
+      ToastAndroid.show(TOAST_MESSAGES.FILL_ALL_FIELDS, ToastAndroid.SHORT);
+    }
+  };
+
+  const handleLoginSuccess = async (data) => {
+    data.logged_in = "1";
+    await AsyncStorage.setItem(DATA, JSON.stringify(data)); // 1 for logged in: 0 otherwise
 
     navigation.navigate(SCREENS.MENU);
-    // }
+    setIsLoggingIn(false);
+    setID(null);
+    setPassword(null);
+    idRef.current.clear();
+    passwordRef.current.clear();
   };
 
   const handleIDChange = (newID) => {
@@ -76,6 +105,7 @@ export default function LoginScreen({ navigation, route }) {
       <Text style={styles.authenticationLabel}>Authentication</Text>
       {/* staff id input */}
       <TextInput
+        ref={idRef}
         style={[
           styles.input,
           !invalidIDInputMessage ? {} : styles.nullInput, // flag input as red if input is null or has digits != 7
@@ -86,8 +116,10 @@ export default function LoginScreen({ navigation, route }) {
       />
       {/* invalid input message */}
       <Text style={styles.invalidInputText}>{invalidIDInputMessage}</Text>
+
       {/* password input */}
       <TextInput
+        ref={passwordRef}
         style={[
           styles.input,
           !invalidPasswordInputMessage ? {} : styles.nullInput,
@@ -152,7 +184,6 @@ const styles = StyleSheet.create({
     color: "#00BFA5",
   },
   divider: {
-    // height: 1,
     width: "85%",
     borderWidth: 0,
     borderTopWidth: 1,

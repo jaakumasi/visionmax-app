@@ -1,18 +1,17 @@
 import React, { useEffect, useRef, useState } from "react";
 import {
-  View,
-  StyleSheet,
   Button,
-  StatusBar,
   Image,
+  StyleSheet,
   Text,
   TouchableOpacity,
-  Dimensions,
+  View,
 } from "react-native";
 import { Camera, CameraType, FlashMode } from "expo-camera";
 import * as FaceDetector from "expo-face-detector";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import useNetworkStatus from "./networkStatus";
+import { SERVER_URL } from "../_shared/constants";
 
 const toastMessages = [
   "Currently offline!", // 0
@@ -58,25 +57,20 @@ export default function CameraComponent() {
   }, [faces]);
 
   const sendImageData = async (base64) => {
-    console.log("sending image...");
     setIsProcessingShot(true);
     const timeoutId = setTimeout(() => {
       setIsTimedOut(true);
       setIsProcessingComplete(true);
-    }, 10000);
+    }, 20000);
 
     try {
-      const response = await fetch(
-        // "https://fastapi-demo-ty9z.onrender.com/image",
-        "http://192.168.43.11:8000/image",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            base64_image: base64,
-          }),
-        }
-      );
+      const response = await fetch(`${SERVER_URL}/image`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          base64_image: base64,
+        }),
+      });
 
       const data = await response.json();
 
@@ -134,19 +128,11 @@ export default function CameraComponent() {
           flashMode={FlashMode.on}
           onFacesDetected={handleFacesDetected}
           faceDetectorSettings={{
-            mode: FaceDetector.FaceDetectorMode.fast,
+            mode: FaceDetector.FaceDetectorMode.accurate,
             landmarks: FaceDetector.FaceDetectorLandmarks.none,
             runClassifications: FaceDetector.FaceDetectorClassifications.none,
           }}
         >
-          <View style={styles.verify}>
-            <Button
-              title={toastMessage}
-              onPress={handleShot}
-              disabled={!(singleFaceDetected && isOnline)}
-            />
-          </View>
-
           {/* flip cam */}
           <View style={styles.switchCam}>
             <FontAwesome
@@ -154,6 +140,14 @@ export default function CameraComponent() {
               size={20}
               color="#0091EA"
               onPress={toggleCameraType}
+            />
+          </View>
+
+          <View style={styles.verify}>
+            <Button
+              title={toastMessage}
+              onPress={handleShot}
+              disabled={!(singleFaceDetected && isOnline)}
             />
           </View>
 
@@ -228,12 +222,6 @@ function Results({
           <Text style={styles.details}>{recognitionData?.index_no}</Text>
           <Text style={styles.details}>{recognitionData?.programme}</Text>
 
-          {/* <TouchableOpacity
-            style={styles.hideResultsComponent}
-            onPress={handleCloseResults}
-          >
-            <Text style={styles.times}>&times;</Text>
-          </TouchableOpacity> */}
           <CloseResultsBtn handleCloseResults={handleCloseResults} />
         </>
       )}
@@ -267,7 +255,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   facesContainer: {
-    flex: 1,
+    flex: 0.9,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -326,7 +314,7 @@ const styles = StyleSheet.create({
   switchCam: {
     position: "absolute",
     top: 15,
-    right: 25,
+    right: 35,
   },
   times: {
     justifyContent: "center",
@@ -338,7 +326,9 @@ const styles = StyleSheet.create({
   verify: {
     position: "absolute",
     alignSelf: "center",
+    // justifyContent: 'flex-end',
     bottom: 10,
+    marginTop: "auto",
     width: "90%",
     borderRadius: 5,
   },

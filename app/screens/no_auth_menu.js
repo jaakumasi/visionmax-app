@@ -1,10 +1,10 @@
 import React from "react";
 import { View, StyleSheet, Text } from "react-native";
 
-export default function Attendance({ navigation }) {
+export default function No_Auth_Menu({ navigation }) {
   return (
     <View style={styles.container}>
-      <Text>...attendance feature...</Text>
+      <Text>...no auth menu...</Text>
     </View>
   );
 }
