@@ -7,7 +7,7 @@
     "icon": "./assets/visionmax_icon.jpg",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/visionmax_splash_sauna.jpg",
+      "image": "./assets/visionmax_splash_sauna.png",
       "resizeMode": "cover",
       "backgroundColor": "#666666"
     },
