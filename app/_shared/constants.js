@@ -10,9 +10,10 @@ export const SCREENS = {
 
 export const DATA = "Data";
 
-export const SERVER_URL = "http://192.168.43.11:8000";
+export const SERVER_URL = "http://192.168.43.46:8000";
 
 export const TOAST_MESSAGES = {
+  OFFLINE: 'Offline',
   INVALID_CRED: "Invalid credentials",
   FILL_ALL_FIELDS: "Please fill in all fields",
 };

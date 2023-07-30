@@ -10,31 +10,34 @@ import {
   ToastAndroid,
   Keyboard,
 } from "react-native";
+import useNetworkStatus from "../components/networkStatus";
 import {
   DATA,
-  LOGGED_IN,
   SCREENS,
   SERVER_URL,
   TOAST_MESSAGES,
 } from "../_shared/constants";
 
-export default function LoginScreen({ navigation, route }) {
+export default function LoginScreen({ navigation }) {
   const [id, setID] = useState(null);
   const [password, setPassword] = useState(null);
   const [invalidIDInputMessage, setInvalidIDInputMessage] = useState("");
   const [invalidPasswordInputMessage, setInvalidPasswordInputMessage] =
     useState("");
   const [isLogginIn, setIsLoggingIn] = useState(false);
+  // network access
+  const isOnline = useNetworkStatus();
 
   const idRef = useRef(null);
   const passwordRef = useRef(null);
 
   const handleContinue = async () => {
-    await AsyncStorage.setItem(LOGGED_IN, "0"); // 1 for logged in: 0 otherwise
+    await AsyncStorage.setItem(DATA, "0"); // 1 for logged in: 0 otherwise
     navigation.navigate(SCREENS.NO_AUTH_MENU);
   };
 
   const handleLogin = async () => {
+    console.log('isOnline: ', isOnline)
     /* login button is only functional when there's no error messages, meaning Id & password are set
        and a login has not already been triggered
     */
@@ -55,7 +58,9 @@ export default function LoginScreen({ navigation, route }) {
         ToastAndroid.show(TOAST_MESSAGES.INVALID_CRED, ToastAndroid.SHORT);
         setIsLoggingIn(false);
       }
-    } else {
+    } else if (!isOnline) { // if offline
+      ToastAndroid.show(TOAST_MESSAGES.OFFLINE, ToastAndroid.SHORT)
+    } else {  
       ToastAndroid.show(TOAST_MESSAGES.FILL_ALL_FIELDS, ToastAndroid.SHORT);
     }
   };

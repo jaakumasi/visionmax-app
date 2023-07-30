@@ -1,19 +1,20 @@
 import React, { useRef, useState } from "react";
 import {
-  Button,
   Image,
   ImageBackground,
   StyleSheet,
   Text,
   TextInput,
+  ToastAndroid,
   TouchableOpacity,
   View,
 } from "react-native";
 import { Camera, CameraType, FlashMode } from "expo-camera";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-import { SERVER_URL } from "../_shared/constants";
+import useNetworkStatus from "../components/networkStatus";
+import { SERVER_URL, TOAST_MESSAGES } from "../_shared/constants";
 
-export default function Enrollment({ navigation }) {
+export default function Enrollment() {
   const [index, setIndex] = useState(null);
   const [name, setName] = useState(null);
   const [programme, setProgramme] = useState(null);
@@ -26,6 +27,7 @@ export default function Enrollment({ navigation }) {
   const [base64Image, setBase64Image] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [cameraType, setCameraType] = useState(CameraType.back);
+  const isOnline = useNetworkStatus();
 
   const cameraRef = useRef(null);
   const nameInputRef = useRef(null);
@@ -46,8 +48,14 @@ export default function Enrollment({ navigation }) {
         }),
       });
 
+      ToastAndroid.show("Success", ToastAndroid.SHORT);
       resetToDefaults();
       setIsSubmitting(false);
+    } else if (!isOnline) {
+      // if offline
+      ToastAndroid.show(TOAST_MESSAGES.OFFLINE, ToastAndroid.SHORT);
+    } else {
+      ToastAndroid.show(TOAST_MESSAGES.FILL_ALL_FIELDS, ToastAndroid.SHORT);
     }
   };
 
@@ -57,7 +65,9 @@ export default function Enrollment({ navigation }) {
     setName(null);
     setIndex(null);
     setProgramme(null);
-    nameInputRef.current.value = "";
+    nameInputRef.current.clear();
+    indexInputRef.current.clear();
+    programmeInputRef.current.clear();
   };
 
   const handleTakeShot = async () => {
